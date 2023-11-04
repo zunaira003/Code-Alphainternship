@@ -1,1 +1,62 @@
 
+Design a text-based Hangman game. The program selects a random word, and the player guesses one letter at a time to uncover the word. You can set a limit on the number of incorrect guesses allowed.
+
+*****************************************************************************************************************************************************************************************************************************
+
+*****************************************************************************************************************************************************************************************************************************
+import random
+
+# List of words to choose from
+words = ["python", "hangman", "programming", "challenge", "word"]
+
+# Select a random word from the list
+chosen_word = random.choice(words)
+word_length = len(chosen_word)
+
+# Initialize game state
+guessed_letters = []
+incorrect_guesses = 0
+max_attempts = 6  # Adjust this for the number of incorrect guesses allowed
+
+# Display initial game state
+print("Welcome to Hangman!")
+print("_ " * word_length)
+
+# Main game loop
+while incorrect_guesses < max_attempts:
+    guess = input("\nEnter a letter: ").lower()
+
+    if len(guess) != 1 or not guess.isalpha():
+        print("Please enter a single letter.")
+        continue
+
+    if guess in guessed_letters:
+        print("You've already guessed that letter.")
+        continue
+
+    guessed_letters.append(guess)
+
+    if guess in chosen_word:
+        print(f"Good guess! {guess} is in the word.")
+    else:
+        incorrect_guesses += 1
+        print(f"Sorry, {guess} is not in the word. {max_attempts - incorrect_guesses} attempts remaining.")
+
+    # Display the current state of the word
+    word_display = ""
+    for letter in chosen_word:
+        if letter in guessed_letters:
+            word_display += letter + " "
+        else:
+            word_display += "_ "
+
+    print(word_display)
+
+    # Check if the player has guessed the word
+    if set(chosen_word) == set(guessed_letters):
+        print("Congratulations! You've guessed the word:", chosen_word)
+        break
+
+# Game over
+if incorrect_guesses >= max_attempts:
+    print("Game over. The word was:", chosen_word)
