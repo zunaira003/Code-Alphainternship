@@ -1,0 +1,40 @@
+Develop a URL shortening service like Bitly. Users can input a long URL, and the application will generate a shorter, unique URL that redirects to the original link.
+
+***************************************************************************************************************************************************************************************************
+***************************************************************************************************************************************************************************************************
+
+
+
+import string
+import random
+
+class URLShortener:
+    def __init__(self):
+        self.url_mapping = {}
+        self.base_url = "https://yourdomain.com/"
+
+    def generate_short_url(self, long_url):
+        short_url = self.base_url + self.generate_random_string()
+        self.url_mapping[short_url] = long_url
+        return short_url
+
+    def generate_random_string(self, length=6):
+        characters = string.ascii_letters + string.digits
+        return ''.join(random.choice(characters) for _ in range(length))
+
+    def resolve_url(self, short_url):
+        return self.url_mapping.get(short_url, "URL not found")
+
+# Initialize the URL shortener
+shortener = URLShortener()
+
+while True:
+    long_url = input("Enter a long URL (or 'quit' to exit): ")
+
+    if long_url.lower() == 'quit':
+        break
+
+    short_url = shortener.generate_short_url(long_url)
+    print(f"Short URL for {long_url}: {short_url}")
+
+print("Goodbye!")
